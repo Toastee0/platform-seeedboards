@@ -1,0 +1,273 @@
+{
+  "name": "Seeed Studio",
+  "title": "Seeed Studio Xiao Series",
+  "description": "The Seeed Studio XIAO Series is a collection of thumb-sized, powerful microcontroller units (MCUs) tailor-made for space-conscious projects requiring high performance and wireless connectivity",
+  "homepage": "https://wiki.seeedstudio.com/SeeedStudio_XIAO_Series_Introduction/",
+  "license": "Apache-2.0",
+  "keywords": [
+    "dev-platform",
+    "xiao",
+    "seeedstudio"
+  ],
+  "engines": {
+    "platformio": ">=6.1.16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Seeed-Studio"
+  },
+  "version": "2025.02.20",
+  "frameworks": {
+    "arduino": {
+      "script": "builder/frameworks/arduino.py"
+    },
+    "espidf": {
+      "package": "framework-espidf",
+      "script": "builder/frameworks/espidf.py"
+    }
+  },
+  "packages": {
+    "framework-arduinoespressif32": {
+      "type": "framework",
+      "optional": true,
+      "owner": "tasmota",
+      "version": "https://github.com/tasmota/arduino-esp32/releases/download/v3.1.1.250203/framework-arduinoespressif32.zip"
+    },
+    "esp32-arduino-libs": {
+      "type": "framework",
+      "optional": true,
+      "owner": "tasmota",
+      "version": "https://github.com/espressif/esp32-arduino-libs/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-d38afc77.zip"
+    },
+    "framework-espidf": {
+      "type": "framework",
+      "optional": true,
+      "owner": "Jason2866",
+      "version": "https://github.com/tasmota/esp-idf/releases/download/v5.3.2.250120/esp-idf-v5.3.2.zip"
+    },
+    "toolchain-xtensa-esp-elf": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "platformio",
+      "version": "13.2.0+20240530"
+    },
+    "toolchain-riscv32-esp": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "platformio",
+      "version": "13.2.0+20240530"
+    },
+    "toolchain-esp32ulp": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.23800.0"
+    },
+      "tool-xtensa-esp-elf-gdb": {
+      "type": "debugger",
+      "optional": true,
+      "owner": "platformio",
+      "version": "14.2.0+20240403"
+    },
+    "tool-riscv32-esp-elf-gdb": {
+      "type": "debugger",
+      "optional": true,
+      "owner": "platformio",
+      "version": "14.2.0+20240403"
+    },
+    "tool-esptoolpy": {
+      "optional": false,
+      "owner": "tasmota",
+      "version": "https://github.com/Jason2866/esptool/releases/download/v4.8.7/esptool.zip"
+    },
+    "tool-dfuutil-arduino": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.11.0"
+    },
+    "tool-openocd-esp32": {
+      "type": "debugger",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~2.1100.0"
+    },
+    "tool-mklittlefs": {
+      "optional":true,
+      "owner": "tasmota",
+      "version": "^3.2.0"
+    },
+    "tool-mkfatfs": {
+ 
+      "optional": true,
+      "owner": "platformio",
+      "version": "~2.0.0"
+    },
+    "tool-cppcheck": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.21100"
+    },
+    "tool-clangtidy": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "^1.190100.0"
+    },
+    "tool-pvs-studio": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "^7.18.59866"
+    },
+    "tool-cmake": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "~3.30.2"
+    },
+    "tool-ninja": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "^1.7.0"
+    },
+    "tool-scons": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "~4.40801.0"
+    },
+    "toolchain-gccarmnoneeabi": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.120301.0",
+      "optionalVersions": [
+        "~1.70201.0",
+        "~1.80201.0",
+        "~1.90201.0"
+      ]
+    },
+    "framework-arduinorenesas-uno": {
+        "type": "framework",
+        "optional": true,
+        "owner": "platformio",
+        "version": "https://files.seeedstudio.com/arduino/core/renesas/ArduinoCore-renesas-1.2.2.tar.bz2"
+      },
+      "tool-bossac": {
+   
+        "optional": true,
+        "owner": "platformio",
+        "version": "~1.10901.0"
+      },
+      "tool-jlink": {
+   
+        "optional": true,
+        "owner": "platformio",
+        "version": "^1.72000.0"
+      },
+      "toolchain-rp2040-earlephilhower": {
+      "type": "toolchain", 
+      "optional": true,
+      "owner": "earlephilhower",
+      "version": "https://github.com/maxgerhardt/toolchain-dummy/archive/refs/heads/main.zip"
+    },
+    "framework-arduino-mbed": {
+      "type": "framework",
+      "optional": true,
+      "owner": "platformio",
+      "version": "https://files.seeedstudio.com/arduino/core/mbed/ArduinoCore-mbed-pio-2.9.2.tar.bz2"
+    },
+    "framework-arduinopico": {
+      "type": "framework",
+      "optional": true,
+      "owner": "earlephilhower",
+      "version": "https://github.com/earlephilhower/arduino-pico.git#b506c010f7766cfb181c8da6db93cb8d554460f6"
+    },
+    "framework-picosdk": {
+      "type": "framework",
+      "optional": true,
+      "owner": "platformio",
+      "version": "https://github.com/maxgerhardt/pico-sdk.git"
+    },
+    "tool-picotool-rp2040-earlephilhower": {
+      "type": "uploader",
+      "optional": true,
+      "owner": "platformio",
+      "version": "https://github.com/maxgerhardt/picotool-dummy/archive/refs/heads/main.zip"
+    },
+    "tool-openocd-rp2040-earlephilhower": {
+      "type": "uploader",
+      "optional": true,
+      "owner": "earlephilhower",
+      "version": "~5.100300.0"
+    },
+    "tool-mklittlefs-rp2040-earlephilhower": {
+      "type": "uploader",
+      "optional": true,
+      "owner": "earlephilhower",
+      "version": "~5.100300.0"
+    },
+    "framework-arduinoadafruitnrf52": {
+      "type": "framework",
+      "optional": true,
+      "owner": "platformio",
+      "version": "https://files.seeedstudio.com/arduino/core/nRF52/Seeed_nRF52_Boards-1.1.9.tar.bz2",
+      "optionalVersions": [
+        "~1.10601.0"
+      ]
+    },
+    "framework-cmsis": {
+      "type": "framework",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~2.50700.0",
+      "optionalVersions": [
+        "~2.50400.0"
+      ]
+    },
+    "tool-adafruit-nrfutil": {
+      "owner": "platformio",
+      "optional": true,
+      "version": "~1.503.0"
+    },
+    "tool-openocd": {
+      "type": "uploader",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~3.1200.0"
+    },
+    "tool-bossac-nordicnrf52": {
+      "type": "uploader",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.10901.0"
+    },
+    "tool-nrfjprog": {
+ 
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.90702.0"
+    },
+    "tool-sreccat": {
+      "owner": "platformio",
+      "version": "~1.164.0"
+    },
+    "framework-arduino-samd-seeed": {
+      "type": "framework",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.8.5"
+    },
+    "framework-cmsis-atmel": {
+      "type": "framework",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.2.2",
+      "optionalVersions": [
+        "~1.1.0"
+      ]
+    },
+    "tool-gperf": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "^3.0.0"
+    }
+
+  }
+}
