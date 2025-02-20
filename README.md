@@ -17,7 +17,7 @@ The [Seeed Studio XIAO Series](https://wiki.seeedstudio.com/SeeedStudio_XIAO_Ser
 
 ```ini
 [env:stable]
-platform = seeedxiao
+platform = Seeed Studio
 board = ...
 framework = arduino
 ...
@@ -27,7 +27,7 @@ framework = arduino
 
 ```ini
 [env:development]
-platform = https://github.com/Seeed-Studio/platform-seeedxiao.git
+platform = https://github.com/Seeed-Studio/platform-seeedboards.git
 board = ...
 framework = arduino
 ...
