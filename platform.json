@@ -30,14 +30,14 @@
     "framework-arduinoespressif32": {
       "type": "framework",
       "optional": true,
-      "owner": "tasmota",
-      "version": "https://github.com/tasmota/arduino-esp32/releases/download/v3.1.1.250203/framework-arduinoespressif32.zip"
+      "owner": "seeed",
+      "version": "https://files.seeedstudio.com/arduino/platformio/framework-arduinoespressif32.zip"
     },
     "esp32-arduino-libs": {
       "type": "framework",
       "optional": true,
-      "owner": "tasmota",
-      "version": "https://github.com/espressif/esp32-arduino-libs/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-d38afc77.zip"
+      "owner": "seeed",
+      "version": "https://files.seeedstudio.com/arduino/platformio/esp32-arduino-libs-idf.zip"
     },
     "framework-espidf": {
       "type": "framework",
