@@ -37,3 +37,7 @@ if "52840" in board.id:
 if "samd" in board.id:
     print("board id is samd,will call board_build/samd/samd_build.py")
     env.SConscript("board_build/samd/samd_build.py", exports="env")
+
+if "mg24" in board.id:
+    print("board id is mg24,will call board_build/siliconlab/siliconlab_build.py")
+    env.SConscript("board_build/siliconlab/siliconlab_build.py", exports="env")

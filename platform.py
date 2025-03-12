@@ -51,6 +51,8 @@ class SeeedstudioPlatform(PlatformBase):
 
         if "samd" in board_name:
             Architecture = "samd"
+        if "mg24" in board_name:
+            Architecture = "siliconlab"
 
         print("Architecture =: ",Architecture)
         if Architecture:
@@ -94,6 +96,8 @@ class SeeedstudioPlatform(PlatformBase):
         
         if "samd" in board_name:
             Architecture = "samd"
+        if "mg24" in board_name:
+            Architecture = "siliconlab"
            
         if Architecture:
         # 动态导入板子配置函数
@@ -124,6 +128,8 @@ class SeeedstudioPlatform(PlatformBase):
             Architecture = "nrf"
         if "samd" in board_name:
             Architecture = "samd"
+        if "mg24" in board_name:
+            Architecture = "siliconlab"
             
         if Architecture:
         # 动态导入板子配置函数
