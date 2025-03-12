@@ -15,16 +15,37 @@
 import json
 import os
 import sys
-
+from platformio import util
 
 IS_WINDOWS = sys.platform.startswith("win")
+
+
+openocd_path = {
+    # Windows
+    "windows": "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-win.zip",
+    # Linux
+    "linux": "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-linux.zip",
+    # Mac
+    "mac": "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-apple.zip"
+}
+
+
 
 def configure_siliconlab_default_packages(self, variables, targets):
     self.packages["toolchain-gccarmnoneeabi"]["optional"] = False
     
     self.packages["framework-arduino-silabs"]["optional"] = False
     self.packages["tool-openocd"]["optional"] = False
-    self.packages["tool-openocd"]["version"] = "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-win.zip"
+
+    sys_type = util.get_systype()
+    print("sys_type is:",sys_type)
+    if "win" in sys_type: 
+        self.packages["tool-openocd"]["version"] = "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-win.zip"
+    elif "linux" in sys_type:
+        self.packages["tool-openocd"]["version"] = "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-linux.zip"
+    else:
+        self.packages["tool-openocd"]["version"] = "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-apple.zip"
+
     if "tool-mklittlefs-rp2040-earlephilhower" in self.packages:
         del self.packages["tool-mklittlefs-rp2040-earlephilhower"]
     if "tool-openocd-rp2040-earlephilhower" in self.packages:
