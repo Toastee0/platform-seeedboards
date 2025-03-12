@@ -42,6 +42,11 @@ assert isdir(CORE_DIR)
 
 VARIANT_DIR = join(FRAMEWORK_DIR, "variants", "xiao_mg24")
 
+
+
+
+
+
 machine_flags = [
     "-mthumb",
     "-mcpu=%s" % board.get("build.mcu"),

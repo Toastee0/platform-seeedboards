@@ -16,12 +16,50 @@ import sys
 from platform import system
 from os import makedirs
 from os.path import isdir, join
+import os
+import subprocess
+
+IS_WINDOWS = sys.platform.startswith("win")
 
 from SCons.Script import (COMMAND_LINE_TARGETS, AlwaysBuild, Builder, Default,
                           DefaultEnvironment)
 
 env = DefaultEnvironment()
 platform = env.PioPlatform()
+
+
+FRAMEWORK_DIR = platform.get_package_dir("framework-arduino-silabs")
+VARIANT_DIR = join(FRAMEWORK_DIR, "variants", "xiao_mg24")
+CORE_DIR = join(FRAMEWORK_DIR, "cores", "silabs")
+
+# Generate includes.txt
+def generate_includes_file(root_dir, output_file="includes.txt", prefix="-iwithprefixbefore"):
+    output_path = os.path.join(root_dir, output_file)
+    with open(output_path, "w", encoding="utf-8") as f:
+        for dirpath, dirnames, _ in os.walk(root_dir):
+            rel_path = os.path.relpath(dirpath, root_dir).replace("\\", "/")  # Calculate relative paths and convert to Unix style
+            if rel_path.endswith("openthread/include/openthread/platform"):
+                continue  # Skip this path  Because time.h here conflicts
+            f.write(f"{prefix}/{rel_path}\n")
+
+generate_includes_file(join(VARIANT_DIR,"matter"))
+
+# Enable case sensitivity
+def set_case_sensitivity(directory):
+    try:
+        result = subprocess.run(
+            ["fsutil", "file", "setCaseSensitiveInfo", directory, "enable"],
+            capture_output=True, text=True, shell=True
+        )
+        if result.returncode == 0:
+            print(f"成功启用 {directory} 的大小写敏感模式")
+        else:
+            print(f"设置失败: {result.stderr}")
+    except Exception as e:
+        print(f"发生错误: {e}")
+
+if IS_WINDOWS:
+    set_case_sensitivity(join(CORE_DIR,"api"))
 
 env.Replace(
     AR="arm-none-eabi-ar",

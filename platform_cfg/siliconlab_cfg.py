@@ -24,7 +24,7 @@ def configure_siliconlab_default_packages(self, variables, targets):
     
     self.packages["framework-arduino-silabs"]["optional"] = False
     self.packages["tool-openocd"]["optional"] = False
-    self.packages["tool-openocd"]["version"] = "http://192.168.40.128:8080/0.12.0-arduino1-static.zip"
+    self.packages["tool-openocd"]["version"] = "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-win.zip"
     if "tool-mklittlefs-rp2040-earlephilhower" in self.packages:
         del self.packages["tool-mklittlefs-rp2040-earlephilhower"]
     if "tool-openocd-rp2040-earlephilhower" in self.packages:
