@@ -38,7 +38,7 @@ def generate_includes_file(root_dir, output_file="includes.txt", prefix="-iwithp
     with open(output_path, "w", encoding="utf-8") as f:
         for dirpath, dirnames, _ in os.walk(root_dir):
             rel_path = os.path.relpath(dirpath, root_dir).replace("\\", "/")  # Calculate relative paths and convert to Unix style
-            if rel_path.endswith("openthread/include/openthread/platform"):
+            if rel_path.endswith("openthread/include/openthread/platform") or rel_path.endswith("matter_2.2.0/src/app"):
                 continue  # Skip this path  Because time.h here conflicts
             f.write(f"{prefix}/{rel_path}\n")
 
