@@ -207,7 +207,7 @@
       "type": "framework",
       "optional": true,
       "owner": "platformio",
-      "version": "https://files.seeedstudio.com/arduino/core/nRF52/Seeed_nRF52_Boards-1.1.9.tar.bz2",
+      "version": "https://files.seeedstudio.com/arduino/platformio/framework-arduinoadafruitnrf52.tar.bz2",
       "optionalVersions": [
         "~1.10601.0"
       ]

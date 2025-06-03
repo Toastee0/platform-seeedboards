@@ -47,8 +47,7 @@ def BeforeUpload(target, source, env):  # pylint: disable=W0613,W0621
         env.Replace(UPLOAD_PORT=basename(env.subst("$UPLOAD_PORT")))
 
 
-# env = DefaultEnvironment()
-Import("env")
+env = DefaultEnvironment()
 platform = env.PioPlatform()
 board = env.BoardConfig()
 variant = board.get("build.variant", "")
@@ -175,7 +174,7 @@ if "nrfutil" == upload_protocol or (
 
 
 if not env.get("PIOFRAMEWORK"):
-    env.SConscript("_bare.py",exports="env")
+    env.SConscript("frameworks/_bare.py")
 
 #
 # Target: Build executable and linkable firmware
@@ -320,7 +319,6 @@ elif upload_protocol == "nrfjprog":
     upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
 
 elif upload_protocol == "nrfutil":
-    print("my upload_protocol == nrfutil")
     env.Replace(
         UPLOADER=join(platform.get_package_dir(
             "tool-adafruit-nrfutil") or "", "adafruit-nrfutil.py"),
@@ -335,8 +333,6 @@ elif upload_protocol == "nrfutil":
         ],
         UPLOADCMD='"$PYTHONEXE" "$UPLOADER" $UPLOADERFLAGS -pkg $SOURCE'
     )
-
-
     upload_actions = [
         env.VerboseAction(BeforeUpload, "Looking for upload port..."),
         env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")
@@ -426,15 +422,6 @@ elif upload_protocol == "custom":
 
 else:
     sys.stderr.write("Warning! Unknown upload protocol %s\n" % upload_protocol)
-
-
-# 解析和打印具体的命令和源文件
-upload_cmd_expanded = env.subst(env['UPLOADCMD'])
-source_expanded = env.subst("$SOURCE")  # 获取具体的 source 文件路径
-
-# 打印解析后的值
-print("UPLOADCMD:", upload_cmd_expanded)
-print("SOURCE:", source_expanded)
 
 env.AddPlatformTarget("upload", target_firm, upload_actions, "Upload")
 

@@ -18,7 +18,7 @@ Arduino Wiring-based Framework allows writing cross-platform software to
 control devices attached to a wide range of Arduino boards to create all
 kinds of creative coding, interactive objects, spaces or physical experiences.
 """
-import os
+
 from os import listdir
 from os.path import isdir, join
 
@@ -31,17 +31,15 @@ platform = env.PioPlatform()
 board = env.BoardConfig()
 variant = board.get("build.variant")
 
-FRAMEWORK_DIR = platform.get_package_dir("framework-arduinoadafruitnrf52")
-print("FRAMEWORK_DIR=:",FRAMEWORK_DIR)
+
+framework_pkg = "framework-arduinoadafruitnrf52"
+FRAMEWORK_DIR = platform.get_package_dir(framework_pkg)
 assert isdir(FRAMEWORK_DIR)
 
 CMSIS_DIR = platform.get_package_dir("framework-cmsis")
-print("CMSIS_DIR=:",CMSIS_DIR)
 assert isdir(CMSIS_DIR)
 
 CORE_DIR = join(FRAMEWORK_DIR, "cores", board.get("build.core"))
-CORE_DIR = join(FRAMEWORK_DIR, "cores", "nRF5")
-print("CORE_DIR=:",CORE_DIR)
 assert isdir(CORE_DIR)
 
 NORDIC_DIR = join(CORE_DIR, "nordic")
@@ -76,12 +74,7 @@ machine_flags = [
     "-mcpu=%s" % board.get("build.cpu"),
 ]
 
-
-
-
 env.Append(
-
-
     ASFLAGS=machine_flags,
     ASPPFLAGS=[
         "-x", "assembler-with-cpp",
@@ -144,16 +137,12 @@ env.Append(
         "-Wl,--warn-common",
         "-Wl,--warn-section-align",
         "-Wl,--wrap=malloc",
-        "-Wl,--wrap=free",
-        "-Wl,--wrap=realloc",
-        "-Wl,--wrap=calloc"
+        "-Wl,--wrap=free"
     ],
 
     LIBSOURCE_DIRS=[join(FRAMEWORK_DIR, "libraries")],
 
     LIBS=["m", "arm_cortexM4lf_math"]
-
-
 )
 
 if board.get("build.cpu") == "cortex-m4":
@@ -287,18 +276,5 @@ libs.append(
     env.BuildLibrary(
         join("$BUILD_DIR", "FrameworkArduino"),
         join(CORE_DIR)))
-
-
-if "afruitnrf52-nrf52840" in board.id:
-    env.Append(
-        CPPPATH=[
-            join(FRAMEWORK_DIR,"libraries","Adafruit_TinyUSB_Arduino","src")
-        ]
-    )
-
-    libs.append(
-        env.BuildLibrary(
-            join("$BUILD_DIR", "Adafruit_TinyUSB_Arduino"),
-            join(FRAMEWORK_DIR,"libraries","Adafruit_TinyUSB_Arduino","src")))
 
 env.Prepend(LIBS=libs)
