@@ -18,7 +18,7 @@ Arduino Wiring-based Framework allows writing cross-platform software to
 control devices attached to a wide range of Arduino boards to create all
 kinds of creative coding, interactive objects, spaces or physical experiences.
 """
-
+import os
 from os import listdir
 from os.path import isdir, join
 
@@ -252,6 +252,21 @@ cpp_flags = env.Flatten(env.get("CPPDEFINES", []))
 if "CFG_DEBUG" not in cpp_flags:
     env.Append(CPPDEFINES=[("CFG_DEBUG", 0)])
 
+
+libraries_dir = os.path.join(FRAMEWORK_DIR, "libraries")
+libpaths = set() 
+
+for root, dirs, files in os.walk(libraries_dir):
+    
+    if any(f.endswith(('.c', '.cpp', '.h', '.a')) for f in files):
+        libpaths.add(root)
+
+env.Append(
+    LIBPATH=list(libpaths)
+)
+
+
+
 #
 # Target: Build Core Library
 #
@@ -276,5 +291,5 @@ libs.append(
     env.BuildLibrary(
         join("$BUILD_DIR", "FrameworkArduino"),
         join(CORE_DIR)))
-
+  
 env.Prepend(LIBS=libs)
