@@ -108,9 +108,15 @@ def _add_nrf_default_debug_tools(self, board):
                                     board.id)
             server_args = [
                 "-s", "$PACKAGE_DIR/openocd/scripts",
-                "-f", "interface/%s.cfg" % link,
-                "-f", "%s" % openocd_target
+                "-f", "interface/%s.cfg" % link
             ]
+            if "54l15" in board.id:
+                server_args.append("-f")
+                server_args.append(openocd_target)
+            else:
+                server_args.append("-f")
+                server_args.append("target/%s" % openocd_target)
+                
             if link == "stlink":
                 server_args.extend([
                     "-c",
