@@ -10,7 +10,7 @@
 	leds {
 		compatible = "gpio-leds";
 		led0: led_0 {
-			gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio2 0 GPIO_ACTIVE_HIGH>;
 			label = "LED 0";
 		};
 	};
@@ -26,25 +26,25 @@
 
 	pdm_imu_en_pin: pdm_imu_en_pin {
 		compatible = "nordic,gpio-pins";
-		gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
+		gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 	};
 
 	rfsw_ctl_pin: rfsw-ctl {
 		compatible = "nordic,gpio-pins";
-		gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+		gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 	};
 
 	rfsw_en_pin: rfsw-en {
 		compatible = "nordic,gpio-pins";
-		gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
+		gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 	};
 
 	vbat_en_pin: vbat-en {
 		compatible = "nordic,gpio-pins";
-		gpios = <&gpio1 14 GPIO_ACTIVE_HIGH>;
+		gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 	};
 
@@ -52,9 +52,9 @@
 		zephyr,code-partition = &slot0_partition;
 		zephyr,sram = &cpuapp_sram;
 		zephyr,flash = &cpuapp_rram;
-		zephyr,console = &uart21;
-		zephyr,shell-uart = &uart21;
-		nordic,rpc-uart = &uart21;
+		zephyr,console = &uart20;
+		zephyr,shell-uart = &uart20;
+		nordic,rpc-uart = &uart20;
 	};
 
 	aliases {
@@ -85,14 +85,14 @@
 	status = "okay";
 };
 
-// &uart00 {
-// 	current-speed = <115200>;
-// 	pinctrl-0 = <&uart00_default>;
-// 	pinctrl-1 = <&uart00_sleep>;
-// 	pinctrl-names = "default", "sleep";
-// 	status = "okay";
-// 	/delete-property/ hw-flow-control;
-// };
+&uart20 {
+	current-speed = <115200>;
+	pinctrl-0 = <&uart20_default>;
+	pinctrl-1 = <&uart20_sleep>;
+	pinctrl-names = "default", "sleep";
+	status = "okay";
+	/delete-property/ hw-flow-control;
+};
 
 &uart21 {
 	current-speed = <115200>;
@@ -119,7 +119,7 @@
 	lsm6dso: lsm6dso@6a {
 		compatible = "st,lsm6dso";
 		reg = <0x6a>;
-		irq-gpios = <&gpio2 4 GPIO_ACTIVE_HIGH>;
+		irq-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
 		accel-pm = <LSM6DSO_DT_XL_ULP_MODE>;
 		gyro-pm = <LSM6DSO_DT_GY_NORMAL_MODE>;
 		status = "okay";
