@@ -7,6 +7,7 @@
  #include <zephyr/kernel.h>
  #include <zephyr/device.h>
  #include <zephyr/drivers/gpio.h>
+ #include <nrfx_power.h>
  
  /* 1000 msec = 1 sec */
  #define SLEEP_TIME_MS   1000
@@ -23,7 +24,7 @@
  {
 	 int ret;
 	 bool led_is_on = true;
- 
+	nrfx_power_constlat_mode_request();
 	 if (!gpio_is_ready_dt(&led)) {
 		 return -1;
 	 }

@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 /dts-v1/;
 #include <nordic/nrf54l15_cpuapp.dtsi>
 #include "xiao_nrf54l15-pinctrl.dtsi"
@@ -66,7 +70,7 @@
 
 	zephyr,user {
 		io-channels = <&adc 0>, <&adc 1>, <&adc 2>, <&adc 3>,
-			<&adc 4>, <&adc 5>, <&adc 6>;
+			<&adc 4>, <&adc 5>, <&adc 6>, <&adc 7>;
 	};
 };
 
@@ -108,6 +112,7 @@
 	pinctrl-0 = <&i2c22_default>;
 	pinctrl-1 = <&i2c22_sleep>;
 	pinctrl-names = "default", "sleep";
+	clock-frequency = <400000>;
 };
 
 &i2c30 {
@@ -115,6 +120,7 @@
 	pinctrl-0 = <&i2c30_default>;
 	pinctrl-1 = <&i2c30_sleep>;
 	pinctrl-names = "default", "sleep";
+	clock-frequency = <400000>;
 
 	lsm6dso: lsm6dso@6a {
 		compatible = "st,lsm6dso";
@@ -133,13 +139,13 @@
 	max-frequency = <32000000>;
 };
 
-// &spi22 {
-// 	status = "okay";
-// 	pinctrl-0 = <&spi22_default>;
-// 	pinctrl-1 = <&spi22_sleep>;
-// 	pinctrl-names = "default", "sleep";
-//	max-frequency = <32000000>;
-// };
+&spi22 {
+	status = "disabled";
+	pinctrl-0 = <&spi22_default>;
+	pinctrl-1 = <&spi22_sleep>;
+	pinctrl-names = "default", "sleep";
+	max-frequency = <32000000>;
+};
 
 &pdm20 {
 	status = "okay";
@@ -213,10 +219,19 @@
 	};
 	channel@6 {
 		reg = <6>;
-		zephyr,gain = "ADC_GAIN_1_2";
+		zephyr,gain = "ADC_GAIN_1_4";
 		zephyr,reference = "ADC_REF_INTERNAL";
 		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
 		zephyr,input-positive = <NRF_SAADC_AIN6>;
+		zephyr,resolution = <12>;
+		zephyr,oversampling = <8>;
+	};
+	channel@7 {
+		reg = <7>;
+		zephyr,gain = "ADC_GAIN_1_4";
+		zephyr,reference = "ADC_REF_INTERNAL";
+		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
+		zephyr,input-positive = <NRF_SAADC_AIN7>;
 		zephyr,resolution = <12>;
 		zephyr,oversampling = <8>;
 	};
@@ -224,6 +239,11 @@
 
 &gpio0 {
 	status = "okay";
+	imu_power_default_on: imu_power_default_on {
+		gpio-hog;
+		gpios = <1 GPIO_ACTIVE_HIGH>;
+		line-name = "imu-power-enable";
+	};
 };
 
 &gpio1 {
@@ -239,6 +259,21 @@
 };
 
 &gpiote30 {
+	status = "okay";
+};
+
+&regulators {
+	status = "okay";
+};
+
+&vregmain {
+	status = "okay";
+	regulator-initial-mode = <NRF5X_REG_MODE_DCDC>;
+};
+
+&lfxo {
+	load-capacitors = "internal";
+	load-capacitance-femtofarad = <16000>;
 	status = "okay";
 };
 
