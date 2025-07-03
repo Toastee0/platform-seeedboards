@@ -59,9 +59,6 @@ means Pin number 0 on PORT2, as used in the board's datasheets and manuals.
 | P1_8  | USART20_RX  | UART Console RX  |
 +-------+-------------+------------------+
 
-The default configuration can be found in
-:zephyr_file:`boards/seeed/xiao_nrf54l15/xiao_nrf54l15_nrf54l15_cpuapp_defconfig`
-
 
 Programming and Debugging
 *************************
@@ -96,7 +93,7 @@ Reset the board and you should see the following message in the terminal:
 
 
 .. _XIAO nRF54L15 Wiki:
-   https://wiki.seeedstudio.com/xiao_nrf54l15_getting_started/
+   https://wiki.seeedstudio.com/getting_started_with_xiao_nrf54l15/
 
 .. _nRF54L15 Website:
    https://www.nordicsemi.com/Products/nRF54L15
