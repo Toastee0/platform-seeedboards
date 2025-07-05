@@ -20,10 +20,14 @@ https://github.com/zephyrproject-rtos/zephyr
 """
 
 from os.path import join
-import yaml
 import subprocess
 import os
 from SCons.Script import Import, SConscript
+try:
+    import yaml
+except ImportError:
+    subprocess.run(["pip", "install", "pyyaml"], check=True)
+    import yaml
 
 Import("env")
 
