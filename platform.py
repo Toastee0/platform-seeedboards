@@ -33,11 +33,11 @@ Architecture = ""
 
 class SeeedstudioPlatform(PlatformBase):
     def configure_default_packages(self, variables, targets):
-        
+
         global Architecture
         if not variables.get("board"):
             return super().configure_default_packages(variables, targets)
-        
+
         board_name = variables.get("board")
 
         if "esp32" in board_name:
@@ -59,11 +59,11 @@ class SeeedstudioPlatform(PlatformBase):
                 configure_board = getattr(board_module, f"configure_{Architecture}_default_packages")
                 configure_board(self, variables, targets)
             except (ImportError, AttributeError) as e:
-                
+
                 print(f"Error: {e} for board {board_name}")
 
         return super().configure_default_packages(variables, targets)
-    
+
 
     def get_boards(self, id_=None):
         result = super().get_boards(id_)
@@ -78,25 +78,25 @@ class SeeedstudioPlatform(PlatformBase):
 
 
     def _add_dynamic_options(self, board):
-        global Architecture   
+        global Architecture
         board_name = board.id
         if "esp32" in board_name:
             Architecture = "esp"
         if board_name == "seeed-xiao-ra4m1":
             Architecture = "renesas"
-            
+
         if board_name == "seeed-xiao-rp2040" or board_name == "seeed-xiao-rp2350":
             Architecture = "rpi"
-        
+
         if "nrf" in board_name:
             Architecture = "nrf"
         if "samd" in board_name:
             Architecture = "samd"
         if "mg24" in board_name:
             Architecture = "siliconlab"
-           
+
         if Architecture:
-        # 动态导入板子配置函数
+            # 动态导入板子配置函数
             try:
                 board_module = import_module(f"platform_cfg.{Architecture}_cfg")
                 configure_tool = getattr(board_module, f"_add_{Architecture}_default_debug_tools")
@@ -105,34 +105,18 @@ class SeeedstudioPlatform(PlatformBase):
                 print(f"Error: in _add_dynamic_options {e} for board {board_name}")
         else:
             print("no config Architecture")
-            return 
+            return
 
 
 
     def configure_debug_session(self, debug_config):
         global Architecture
-        board_name = board.id
-        if "esp32" in board_name:
-            Architecture = "esp"
-        if board_name == "seeed-xiao-ra4m1":
-            Architecture = "renesas"
-            
-        if board_name == "seeed-xiao-rp2040" or board_name == "seeed-xiao-rp2350":
-            Architecture = "rpi"
-        
-        if "nrf" in board_name:
-            Architecture = "nrf"
-        if "samd" in board_name:
-            Architecture = "samd"
-        if "mg24" in board_name:
-            Architecture = "siliconlab"
-            
+
         if Architecture:
-        # 动态导入板子配置函数
+            # 动态导入板子配置函数
             try:
                 board_module = import_module(f"platform_cfg.{Architecture}_cfg")
                 configure_debug_seesion = getattr(board_module, f"configure_{Architecture}_debug_session")
                 configure_debug_seesion(self, debug_config)
             except (ImportError, AttributeError) as e:
                 print(f"Error: in configure_debug_session {e} for board {Architecture}")
-
