@@ -32,6 +32,7 @@ openocd_path = {
 
 
 def configure_siliconlab_default_packages(self, variables, targets):
+    self.packages["toolchain-gccarmnoneeabi"]["version"] = '1.120301.0'
     self.packages["toolchain-gccarmnoneeabi"]["optional"] = False
     
     self.packages["framework-arduino-silabs"]["optional"] = False
