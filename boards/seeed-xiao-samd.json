@@ -1,7 +1,7 @@
 {
   "build": {
     "arduino": {
-        "ldscript": "flash_with_bootloader.ld"
+      "ldscript": "flash_with_bootloader.ld"
     },
     "core": "seeed",
     "cpu": "cortex-m0plus",
@@ -31,6 +31,9 @@
   },
   "debug": {
     "jlink_device": "ATSAMD21G18",
+    "onboard_tools": [
+      "cmsis-dap"
+    ],
     "openocd_chipname": "at91samd21g18",
     "openocd_target": "at91samdXX",
     "svd_path": "ATSAMD21G18A.svd"
@@ -45,9 +48,9 @@
     "maximum_size": 262144,
     "native_usb": true,
     "offset_address": "0x2000",
-    "protocol": "sam-ba",
+    "protocol": "cmsis-dap",
     "protocols": [
-      "sam-ba",
+      "cmsis-dap",
       "blackmagic",
       "jlink",
       "atmel-ice"
