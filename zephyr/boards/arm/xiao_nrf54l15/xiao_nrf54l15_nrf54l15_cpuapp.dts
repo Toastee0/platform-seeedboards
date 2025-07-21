@@ -4,6 +4,7 @@
 
 /dts-v1/;
 #include <nordic/nrf54l15_cpuapp.dtsi>
+#include "seeed_xiao_connector.dtsi"
 #include "xiao_nrf54l15_common.dtsi"
 
 / {

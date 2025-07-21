@@ -28,7 +28,6 @@ Hardware
 - 128 MHz RISC-V coprocessor
 - Advanced security including TrustZone® isolation, tamper detection,
     and cryptographic engine side-channel leakage protection
-- Ultra-compact WLCSP (2.4x2.2 mm) and QFN (6.0x6.0 mm) packages
 
 
 For more information about the nRF54L15 SoC and XIAO nRF54L15 board, refer to these
