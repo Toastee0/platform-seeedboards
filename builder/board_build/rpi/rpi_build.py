@@ -647,7 +647,7 @@ elif upload_protocol in debug_tools:
         for f in openocd_args
     ]
     env.Replace(
-        UPLOADER="openocd",
+        UPLOADER=join(platform.get_package_dir("tool-openocd-rp2040-earlephilhower") or "", "bin", "openocd"),
         UPLOADERFLAGS=openocd_args,
         UPLOADCMD="$UPLOADER $UPLOADERFLAGS")
     if not board.get("upload").get("offset_address"):
