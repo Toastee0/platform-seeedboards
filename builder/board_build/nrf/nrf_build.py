@@ -209,9 +209,13 @@ else:
         target_firm = env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
     else:
         if "DFUBOOTHEX" in env:
-            target_firm = env.SignBin(
-                join("$BUILD_DIR", "${PROGNAME}"),
-                env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf))
+            if upload_protocol == "cmsis-dap":
+                target_firm = env.ElfToHex(
+                    join("$BUILD_DIR", "${PROGNAME}"), target_elf)
+            else:
+                target_firm = env.SignBin(
+                    join("$BUILD_DIR", "${PROGNAME}"),
+                    env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf))
         else:
             target_firm = env.ElfToHex(
                 join("$BUILD_DIR", "${PROGNAME}"), target_elf)
@@ -402,7 +406,7 @@ elif upload_protocol in debug_tools:
             ["-c", "adapter speed %s" % env.GetProjectOption("debug_speed")]
         )
     openocd_args.extend([
-        "-c", "init; mww 0x5004b500 0x101; load_image {$SOURCE}; reset run; exit"
+        "-c", "init; targets; halt; program {$SOURCE} verify reset; shutdown"
     ])
     openocd_args = [
         f.replace("$PACKAGE_DIR",
