@@ -37,7 +37,8 @@
     "protocols": [
       "cmsis-dap",
       "dfu",
-      "jlink"
+      "jlink",
+      "pyocd"
     ],
     "offset_address": "0x4000"
   },

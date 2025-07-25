@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import sys
+import subprocess
 from platform import system
 from os import makedirs
 from os.path import basename, isdir, join
@@ -50,6 +51,33 @@ def BeforeUpload(target, source, env):  # pylint: disable=W0613,W0621
     if ("/" in env.subst("$UPLOAD_PORT") and
             env.subst("$UPLOAD_PROTOCOL") == "sam-ba"):
         env.Replace(UPLOAD_PORT=basename(env.subst("$UPLOAD_PORT")))
+
+
+def install_pyocd():
+    try:
+        import pyocd
+        print("pyocd is already installed")
+    except ImportError:
+        print("pyocd is not installed, installing...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "pyocd"])
+        print("pyocd installed successfully")
+
+def install_r7fa4m1ab():
+    try:
+        output = subprocess.check_output([sys.executable, "-m", "pyocd", "pack", "show"], text=True)
+        if "r7fa4m1ab" not in output:
+            print("r7fa4m1ab not installed, installing...")
+            subprocess.check_call([sys.executable, "-m", "pyocd", "pack", "install", "r7fa4m1ab"])
+            print("r7fa4m1ab installed successfully")
+        else:
+            print("r7fa4m1ab is already installed")
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing r7fa4m1ab: {e}")
+        print(f"Return code: {e.returncode}")
+        # 改进错误信息处理，避免None值导致问题
+        print(f"Output: {e.output.decode() if e.output else 'None'}")
+        print(f"Error: {e.stderr.decode() if e.stderr else 'None'}")
+        sys.exit(1)
 
 
 # env = DefaultEnvironment()
@@ -105,14 +133,17 @@ if not env.get("PIOFRAMEWORK"):
 #
 # Target: Build executable and linkable firmware
 #
-
+upload_protocol = env.subst("$UPLOAD_PROTOCOL") or "picotool"
 target_elf = None
 if "nobuild" in COMMAND_LINE_TARGETS:
     target_elf = join("$BUILD_DIR", "${PROGNAME}.elf")
     target_firm = join("$BUILD_DIR", "${PROGNAME}.bin")
 else:
     target_elf = env.BuildProgram()
-    target_firm = env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
+    if upload_protocol == "pyocd":
+        target_firm = env.ElfToHex(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
+    else:
+        target_firm = env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
     env.Depends(target_firm, "checkprogsize")
 
 AlwaysBuild(env.Alias("nobuild", target_firm))
@@ -132,7 +163,6 @@ AlwaysBuild(target_size)
 #
 
 debug_tools = env.BoardConfig().get("debug.tools", {})
-upload_protocol = env.subst("$UPLOAD_PROTOCOL") or "picotool"
 upload_actions = []
 upload_source = target_firm
 
@@ -202,7 +232,7 @@ elif upload_protocol.startswith("jlink"):
             "loadbin %s, %s" % (source, board.get("upload.offset_address", "0x0")),
             "r",
             "q",
-        ]
+            ]
         with open(script_path, "w") as fp:
             fp.write("\n".join(commands))
         return script_path
@@ -239,7 +269,7 @@ elif upload_protocol in debug_tools:
         )
     openocd_args.extend([
         "-c", "program {$SOURCE} %s verify reset; shutdown;" %
-        board.get("upload.offset_address", "")
+              board.get("upload.offset_address", "")
     ])
     openocd_args = [
         f.replace("$PACKAGE_DIR", platform.get_package_dir(
@@ -254,6 +284,31 @@ elif upload_protocol in debug_tools:
     if not board.get("upload").get("offset_address"):
         upload_source = target_elf
 
+    upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
+
+# pyocd
+# If you want to use this protocol to upload the program
+# please ensure that you have installed pyocd and r7fa4m1ab.
+# Refer to the following installation method:
+#   pip install pyocd
+#   pyocd pack install r7fa4m1ab
+elif upload_protocol == "pyocd":
+    install_pyocd()
+    install_r7fa4m1ab()
+    pyocd_args = [
+        "flash",
+        "-e",
+        "sector",
+        "-a",
+        "0x0",
+        "-t",
+        "r7fa4m1ab",
+        "$SOURCE"
+    ]
+    env.Replace(
+        UPLOADER="pyocd",
+        UPLOADERFLAGS=pyocd_args,
+        UPLOADCMD="$UPLOADER $UPLOADERFLAGS")
     upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
 
 # custom upload tool

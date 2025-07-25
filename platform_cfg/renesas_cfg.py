@@ -1,5 +1,7 @@
+import os
+import sys
+IS_WINDOWS = sys.platform.startswith("win")
 def configure_renesas_default_packages(self, variables, targets):
-    
     def _configure_uploader_packages(package_name, interface_name):
         use_conditions = [
             interface_name in variables.get(option, "")
@@ -35,13 +37,13 @@ def _add_renesas_default_debug_tools(self, board):
     if "tools" not in debug:
         debug["tools"] = {}
 
-    for link in ("jlink"):
+    for link in ("jlink", "cmsis-dap"):
         if link not in upload_protocols or link in debug["tools"]:
             continue
 
         if link == "jlink":
             assert debug.get("jlink_device"), (
-                "Missed J-Link Device ID for %s" % board.id
+                    "Missed J-Link Device ID for %s" % board.id
             )
             debug["tools"][link] = {
                 "server": {
@@ -57,16 +59,21 @@ def _add_renesas_default_debug_tools(self, board):
                         "-port",
                         "2331",
                     ],
-                    "executable": (
-                        "JLinkGDBServerCL.exe"
-                        if platform.system() == "Windows"
-                        else "JLinkGDBServer"
-                    ),
+                    "executable": ("JLinkGDBServerCL.exe"
+                                   if IS_WINDOWS else
+                                   "JLinkGDBServer")
                 },
                 "onboard": link in debug.get("onboard_tools", []),
             }
-        elif link == "cmsis-dap" and board.id in ("uno_r4_wifi", "uno_r4_minima"):
+        elif link == "cmsis-dap" and board.id in ("uno_r4_wifi", "uno_r4_minima","seeed-xiao-ra4m1"):
             hwids = board.get("build.hwids", [["0x2341", "0x1002"]])
+
+            # Now OpenOCD does not have the ra4m1.cfg configuration file
+            # so we provide it in this repository.
+            current_file_path = os.path.abspath(__file__)
+            current_dir = os.path.dirname(current_file_path)
+            parent_dir = os.path.dirname(current_dir)
+
             server_args = [
                 "-s",
                 # Note: only `uno_r4_wifi` variant folder contains an OpenOCD script
@@ -74,13 +81,15 @@ def _add_renesas_default_debug_tools(self, board):
                     self.get_package_dir("framework-arduinorenesas-uno") or "",
                     "variants",
                     "UNOWIFIR4",
-                ),
+                    ),
                 "-s",
                 "$PACKAGE_DIR/openocd/scripts",
                 "-f",
-                "openocd.cfg",
+                "interface/cmsis-dap.cfg",
+                "-f",
+                "%s/builder/board_build/renesas/ra4m1.cfg" % parent_dir,
                 "-c",
-                "cmsis_dap_vid_pid %s %s" % (hwids[0][0], hwids[0][1]),
+                "cmsis_dap_vid_pid %s %s" % ("0x0D28", "0x0204")
             ]
 
             debug["tools"][link] = {
