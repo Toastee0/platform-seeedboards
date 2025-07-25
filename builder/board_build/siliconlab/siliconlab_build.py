@@ -170,7 +170,7 @@ elif upload_protocol.startswith("blackmagic"):
             "--batch",
             "-ex", "target extended-remote $UPLOAD_PORT",
             "-ex", "monitor %s_scan" %
-            ("jtag" if upload_protocol == "blackmagic-jtag" else "swdp"),
+                ("jtag" if upload_protocol == "blackmagic-jtag" else "swdp"),
             "-ex", "attach 1",
             "-ex", "load",
             "-ex", "compare-sections",
@@ -214,27 +214,28 @@ elif upload_protocol.startswith("jlink"):
         UPLOADCMD='$UPLOADER $UPLOADERFLAGS -CommanderScript "${__jlink_cmd_script(__env__, SOURCE)}"'
     )
     upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
-elif upload_protocol == "openocd":
+elif upload_protocol in debug_tools:
     openocd_args = [
         "-d2"
     ]
     openocd_args.extend(
         debug_tools.get(upload_protocol).get("server").get("arguments", []))
-    
+
     if env.GetProjectOption("debug_speed"):
         openocd_args.extend(
             ["-c", "adapter speed %s" % env.GetProjectOption("debug_speed")]
         )
     openocd_args.extend([
-        "-c", "init; reset_config srst_nogate; reset halt; program {$SOURCE}; reset; exit;"
+        "-c", "init; targets; halt; program {$SOURCE} verify reset; shutdown"
     ])
     openocd_args = [
         f.replace("$PACKAGE_DIR", platform.get_package_dir(
             "tool-openocd") or "")
         for f in openocd_args
     ]
+
     env.Replace(
-        UPLOADER="openocd",
+        UPLOADER=join(platform.get_package_dir("tool-openocd") or "", "bin", "openocd"),
         UPLOADERFLAGS=openocd_args,
         UPLOADCMD="$UPLOADER $UPLOADERFLAGS")
 

@@ -15,7 +15,10 @@
     "debug": {
       "jlink_device": "EFR32MG24B020F1536IM40",
       "openocd_target": "efm32s2_g23.cfg",
-      "svd_path": "EFR32MG24B020F1536IM40.svd"
+      "svd_path": "EFR32MG24B020F1536IM40.svd",
+      "onboard_tools": [
+        "cmsis-dap"
+      ]
     },
     "frameworks": [
       "arduino"
@@ -25,7 +28,11 @@
       "flash_size": "5767168",
       "maximum_ram_size": 262144,
       "maximum_size": 5767168,
-      "protocol": "openocd"
+      "protocol": "cmsis-dap",
+      "protocols": [
+        "cmsis-dap",
+        "jlink"
+      ]
     },
     "url": "https://wiki.seeedstudio.com/xiao_mg24_getting_started/",
     "vendor": "Seeed Studio"

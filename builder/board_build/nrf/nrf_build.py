@@ -106,7 +106,7 @@ env.Append(
         MergeHex=Builder(
             action=env.VerboseAction(" ".join([
                 '"%s"' % join(platform.get_package_dir("tool-sreccat") or "",
-                     "srec_cat"),
+                    "srec_cat"),
                 "$SOFTDEVICEHEX",
                 "-intel",
                 "$SOURCES",
@@ -209,9 +209,13 @@ else:
         target_firm = env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
     else:
         if "DFUBOOTHEX" in env:
-            target_firm = env.SignBin(
-                join("$BUILD_DIR", "${PROGNAME}"),
-                env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf))
+            if upload_protocol == "cmsis-dap" and board.get("build.mcu") == "nrf52840":
+                target_firm = env.ElfToHex(
+                    join("$BUILD_DIR", "${PROGNAME}"), target_elf)
+            else:
+                target_firm = env.SignBin(
+                    join("$BUILD_DIR", "${PROGNAME}"),
+                    env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf))
         else:
             target_firm = env.ElfToHex(
                 join("$BUILD_DIR", "${PROGNAME}"), target_elf)
@@ -294,7 +298,7 @@ elif upload_protocol.startswith("blackmagic"):
             "--batch",
             "-ex", "target extended-remote $UPLOAD_PORT",
             "-ex", "monitor %s_scan" %
-            ("jtag" if upload_protocol == "blackmagic-jtag" else "swdp"),
+                   ("jtag" if upload_protocol == "blackmagic-jtag" else "swdp"),
             "-ex", "attach 1",
             "-ex", "load",
             "-ex", "compare-sections",
@@ -401,9 +405,16 @@ elif upload_protocol in debug_tools:
         openocd_args.extend(
             ["-c", "adapter speed %s" % env.GetProjectOption("debug_speed")]
         )
-    openocd_args.extend([
-        "-c", "init; mww 0x5004b500 0x101; load_image {$SOURCE}; reset run; exit"
-    ])
+    # 52840 use hex to upload
+    if board.get("build.mcu") == "nrf52840":
+        openocd_args.extend([
+            "-c", "init; targets; halt; program {$SOURCE} verify reset; shutdown"
+        ])
+    # 54l15 use bin to upload
+    else :
+        openocd_args.extend([
+            "-c", "init; mww 0x5004b500 0x101; load_image {$SOURCE}; reset run; exit"
+        ])
     openocd_args = [
         f.replace("$PACKAGE_DIR",
                   platform.get_package_dir("tool-openocd") or "")
