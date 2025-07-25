@@ -34,13 +34,13 @@ openocd_path = {
 def configure_siliconlab_default_packages(self, variables, targets):
     self.packages["toolchain-gccarmnoneeabi"]["version"] = '1.120301.0'
     self.packages["toolchain-gccarmnoneeabi"]["optional"] = False
-    
+
     self.packages["framework-arduino-silabs"]["optional"] = False
     self.packages["tool-openocd"]["optional"] = False
 
     sys_type = util.get_systype()
     print("sys_type is:",sys_type)
-    if "darwin" in sys_type: 
+    if "darwin" in sys_type:
         self.packages["tool-openocd"]["version"] = "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-apple.tar.gz"
     elif "linux" in sys_type:
         self.packages["tool-openocd"]["version"] = "https://files.seeedstudio.com/arduino/platformio/forsilicon-openocd-linux.tar.gz"
@@ -61,7 +61,7 @@ def configure_siliconlab_default_packages(self, variables, targets):
 
 
 def _add_siliconlab_default_debug_tools(self, board):
-    
+
     debug = board.manifest.get("debug", {})
     upload_protocols = board.manifest.get("upload", {}).get(
         "protocols", [])
@@ -72,16 +72,24 @@ def _add_siliconlab_default_debug_tools(self, board):
     openocd_target = debug.get("openocd_target")
     assert openocd_target, ("Missing target configuration for %s" %
                             board.id)
-    debug["tools"]["openocd"] = {
+    debug["tools"]["cmsis-dap"] = {
         "server": {
-            "executable": "tool-openocd/bin/openocd",
+            "executable": "bin/openocd",
             "package": "tool-openocd",
             "arguments": [
                 "-s", "$PACKAGE_DIR/share/openocd/scripts",
                 "-f", "interface/cmsis-dap.cfg",
-                "-f", "target/%s" % openocd_target
-            ]
-        }
+                "-f", "target/%s" % openocd_target,
+                "-c", "adapter speed 1000",
+                      ]
+        },
+        "load_cmds": "preload",
+        "init_cmds": [
+            "target extended-remote $DEBUG_PORT",
+            "$LOAD_CMDS",
+            "pio_reset_halt_target",
+            "$INIT_BREAK",
+        ],
     }
 
 
