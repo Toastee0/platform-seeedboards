@@ -74,7 +74,6 @@ def install_r7fa4m1ab():
     except subprocess.CalledProcessError as e:
         print(f"Error installing r7fa4m1ab: {e}")
         print(f"Return code: {e.returncode}")
-        # 改进错误信息处理，避免None值导致问题
         print(f"Output: {e.output.decode() if e.output else 'None'}")
         print(f"Error: {e.stderr.decode() if e.stderr else 'None'}")
         sys.exit(1)
@@ -232,7 +231,7 @@ elif upload_protocol.startswith("jlink"):
             "loadbin %s, %s" % (source, board.get("upload.offset_address", "0x0")),
             "r",
             "q",
-            ]
+        ]
         with open(script_path, "w") as fp:
             fp.write("\n".join(commands))
         return script_path
@@ -269,7 +268,7 @@ elif upload_protocol in debug_tools:
         )
     openocd_args.extend([
         "-c", "program {$SOURCE} %s verify reset; shutdown;" %
-              board.get("upload.offset_address", "")
+            board.get("upload.offset_address", "")
     ])
     openocd_args = [
         f.replace("$PACKAGE_DIR", platform.get_package_dir(

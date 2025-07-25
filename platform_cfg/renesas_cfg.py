@@ -43,7 +43,7 @@ def _add_renesas_default_debug_tools(self, board):
 
         if link == "jlink":
             assert debug.get("jlink_device"), (
-                    "Missed J-Link Device ID for %s" % board.id
+                "Missed J-Link Device ID for %s" % board.id
             )
             debug["tools"][link] = {
                 "server": {
@@ -81,7 +81,7 @@ def _add_renesas_default_debug_tools(self, board):
                     self.get_package_dir("framework-arduinorenesas-uno") or "",
                     "variants",
                     "UNOWIFIR4",
-                    ),
+                ),
                 "-s",
                 "$PACKAGE_DIR/openocd/scripts",
                 "-f",

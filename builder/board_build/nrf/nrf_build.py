@@ -106,7 +106,7 @@ env.Append(
         MergeHex=Builder(
             action=env.VerboseAction(" ".join([
                 '"%s"' % join(platform.get_package_dir("tool-sreccat") or "",
-                              "srec_cat"),
+                    "srec_cat"),
                 "$SOFTDEVICEHEX",
                 "-intel",
                 "$SOURCES",
@@ -124,8 +124,8 @@ env.Append(
 upload_protocol = env.subst("$UPLOAD_PROTOCOL")
 
 if "nrfutil" == upload_protocol or (
-        board.get("build.bsp.name", "nrf5") == "adafruit"
-        and "arduino" in env.get("PIOFRAMEWORK", [])
+    board.get("build.bsp.name", "nrf5") == "adafruit"
+    and "arduino" in env.get("PIOFRAMEWORK", [])
 ):
     env.Append(
         BUILDERS=dict(
@@ -159,11 +159,11 @@ if "nrfutil" == upload_protocol or (
                                 "tools",
                                 "pynrfbintool",
                                 "pynrfbintool.py",
-                                ),
+                            ),
                             "--signature",
                             "$TARGET",
                             "$SOURCES",
-                            ]
+                        ]
                     ),
                     "Signing $SOURCES",
                 ),
@@ -368,7 +368,7 @@ elif upload_protocol.startswith("jlink"):
         commands = ["h"]
         if "DFUBOOTHEX" in env:
             commands.append("loadbin %s,%s" % (str(source).replace("_signature", ""),
-                                               env.BoardConfig().get("upload.offset_address", "0x26000")))
+                env.BoardConfig().get("upload.offset_address", "0x26000")))
             commands.append("loadbin %s,%s" % (source, env.get("BOOT_SETTING_ADDR")))
         else:
             commands.append("loadbin %s,%s" % (source, env.BoardConfig().get(

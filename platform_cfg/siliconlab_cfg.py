@@ -81,7 +81,7 @@ def _add_siliconlab_default_debug_tools(self, board):
                 "-f", "interface/cmsis-dap.cfg",
                 "-f", "target/%s" % openocd_target,
                 "-c", "adapter speed 1000",
-                      ]
+            ]
         },
         "load_cmds": "preload",
         "init_cmds": [
