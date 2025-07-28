@@ -33,5 +33,5 @@
 
 &xiao_spi {
     status = "okay";
-	cs-gpios = <&xiao_d 2 GPIO_ACTIVE_LOW>;
+	cs-gpios = <&xiao_d 1 GPIO_ACTIVE_LOW>;
 };
