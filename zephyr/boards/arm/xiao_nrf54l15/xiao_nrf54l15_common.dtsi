@@ -80,6 +80,14 @@
 	clock-source = "PCLK32M";
 };
 
+&pwm20 {
+	status = "okay";
+	pinctrl-0 = <&pwm20_default>;
+	pinctrl-1 = <&pwm20_sleep>;
+	pinctrl-names = "default", "sleep";
+};
+
+
 &adc {
 	#address-cells = <1>;
 	#size-cells = <0>;
