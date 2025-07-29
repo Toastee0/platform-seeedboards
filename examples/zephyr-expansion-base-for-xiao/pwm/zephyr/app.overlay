@@ -1,0 +1,14 @@
+/ {
+    aliases {
+        pwm-led = &pwm0_led0;
+    };
+
+    pwm_leds {
+        compatible = "pwm-leds";
+        pwm0_led0: my_pwm_led {
+            pwms = <&pwm20 0 PWM_MSEC(20) PWM_POLARITY_NORMAL>;
+            status = "okay";
+        };
+    };
+};
+
