@@ -16,7 +16,7 @@
     };
 
     aliases {
-        sw0 = &xiao_button0;  // Alias for the button
+        sw1 = &xiao_button0;  // Alias for the button
         relay0 = &xiao_relay0; // Alias for the relay
     };
 };
