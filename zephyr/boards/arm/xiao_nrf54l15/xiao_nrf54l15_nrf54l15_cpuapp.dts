@@ -151,6 +151,12 @@
 	status = "okay";
 };
 
+&hfxo {
+	load-capacitors = "internal";
+	load-capacitance-femtofarad = <16000>;
+	status = "okay";
+};
+
 &cpuapp_rram {
 	partitions {
 		compatible = "fixed-partitions";
