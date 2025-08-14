@@ -146,7 +146,7 @@ int main(void)
     dmic_config.channel.req_chan_map_lo = dmic_build_channel_map(0, 0, PDM_CHAN_LEFT);
 
     // Configure LED as output
-    ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_INACTIVE);
+    ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
     if (ret < 0) { return ret; }
 
     // Configure button as input and enable interrupt
@@ -165,9 +165,9 @@ int main(void)
         k_sem_take(&button_sem, K_FOREVER);
         LOG_INF("Button pressed, starting capture...");
 
-        gpio_pin_set_dt(&led, 1);
-        record_and_stream_audio();
         gpio_pin_set_dt(&led, 0);
+        record_and_stream_audio();
+        gpio_pin_set_dt(&led, 1);
 
         LOG_INF("\nPress button SW0 to start recording again...");
     }
