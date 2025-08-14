@@ -1,3 +1,13 @@
+"""
+@file record.py
+@brief Python script to record audio from a serial port and save it as a WAV file.
+usage:
+    On Windows: 
+        python record.py -p COM3 -o output.wav -b 921600
+    On Linux:
+        python record.py -p /dev/ttyACM0 -o output.wav -b 921600
+"""
+
 import argparse
 import sys
 import time
