@@ -17,11 +17,11 @@ import serial
 SAMPLE_RATE = 16000              # Audio sample rate (Hz)
 SAMPLE_WIDTH_BYTES = 2           # Sample width in bytes (16-bit PCM)
 CHANNELS = 1                     # Number of audio channels
-RECORD_DURATION_S = 5            # Recording duration (seconds)
+RECORD_DURATION_S = 10            # Recording duration (seconds)
 
 PACKET_START = bytes([0xAA, 0x55, ord('S'), ord('T'), ord('A'), ord('R'), ord('T')]) # Start packet marker
 PACKET_END = bytes([0xAA, 0x55, ord('E'), ord('N'), ord('D')])                       # End packet marker
-SYNC_TIMEOUT_S = 10              # Timeout for waiting start signal (seconds)
+SYNC_TIMEOUT_S = 20             # Timeout for waiting start signal (seconds)
 
 def find_start_packet(ser, timeout):
     """
@@ -81,7 +81,7 @@ def main(port, baudrate, output_file):
             print(f"Received {len(audio_data)} bytes of audio data.")
             
             # Optionally verify end packet
-            ser.timeout = 0.5 
+            ser.timeout = 2.0 
             end_buffer = ser.read(len(PACKET_END))
             if end_buffer == PACKET_END:
                 print("Transfer verified (END packet received).")
