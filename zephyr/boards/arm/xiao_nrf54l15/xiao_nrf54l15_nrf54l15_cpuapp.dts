@@ -98,10 +98,6 @@
 	status = "okay";
 };
 
-&pwm20 {
-	status = "okay";
-};
-
 &pdm20 {
 	status = "okay";
 };
