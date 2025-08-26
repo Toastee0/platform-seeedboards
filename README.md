@@ -1,4 +1,4 @@
-# Seeed Xiao Series: Experimental modified board definitions
+# Seeed Xiao NRF54L15 Series: Experimental modified board definitions
 #Fixed set of board definitions that allow platform.io to work, follow the seeed wiki instructions, but use this repository instead of the official seed one.
 
 main changes:
