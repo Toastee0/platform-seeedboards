@@ -3,6 +3,7 @@
       "cpu": "cortex-m33",
       "f_cpu": "128000000L",
       "mcu": "nRF54L15",
+        "variant": "SEEED_XIAO_NRF54L15",
       "zephyr": {
         "variant": "xiao_nrf54l15/nrf54l15/cpuapp"
      }
