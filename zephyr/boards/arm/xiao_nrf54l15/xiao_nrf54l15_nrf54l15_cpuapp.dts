@@ -166,13 +166,11 @@
 &lfxo {
 	load-capacitors = "internal";
 	load-capacitance-femtofarad = <16000>;
-	status = "okay";
 };
 
 &hfxo {
 	load-capacitors = "internal";
 	load-capacitance-femtofarad = <16000>;
-	status = "okay";
 };
 
 &cpuapp_rram {
