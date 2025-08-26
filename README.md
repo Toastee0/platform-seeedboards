@@ -1,4 +1,6 @@
+# Seeed Xiao Series: Experimental modified board definitions
 #Fixed set of board definitions that allow platform.io to work, follow the seeed wiki instructions, but use this repository instead of the official seed one.
+
 main changes:
 Added the line to NRF54l15.json, this corrects platform IO failing to find the board definitions.
 ```
@@ -50,21 +52,11 @@ The [Seeed Studio XIAO Series](https://wiki.seeedstudio.com/SeeedStudio_XIAO_Ser
 1. [Install PlatformIO](http://platformio.org)
 2. Create PlatformIO project and configure a platform option in [platformio.ini](http://docs.platformio.org/page/projectconf.html) file:
 
-## Stable version
-
-```ini
-[env:stable]
-platform = Seeed Studio
-board = ...
-framework = arduino
-...
-```
-
 ## Development version
 
 ```ini
 [env:development]
-platform = https://github.com/Seeed-Studio/platform-seeedboards.git
+platform = https://github.com/Toastee0/platform-seeedboards.git
 board = ...
 framework = arduino
 ...
