@@ -97,16 +97,25 @@
 };
 
 &radio {
-    status = "okay";
+	status = "okay";
 };
 
 &ieee802154 {
-    status = "okay";
+	status = "okay";
+};
+
+&temp {
+	status = "okay";
+};
+
+&clock {
+	status = "okay";
 };
 
 &nfct {
     status = "okay";
 };
+
 &spi00 {
 	status = "okay";
 };
