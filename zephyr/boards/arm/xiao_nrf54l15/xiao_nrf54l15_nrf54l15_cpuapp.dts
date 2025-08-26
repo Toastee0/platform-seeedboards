@@ -22,8 +22,7 @@
 	rfsw_ctl: rfsw-ctl {
 		compatible = "regulator-fixed";
 		regulator-name = "rfsw-ctl";
-		enable-gpios = <&gpio2 5 GPIO_ACTIVE_LOW>;
-		regulator-boot-on;
+		enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
 	};
 
 	rfsw_pwr: rfsw-pwr {
@@ -47,11 +46,28 @@
 		zephyr,console = &uart20;
 		zephyr,shell-uart = &uart20;
 		nordic,rpc-uart = &uart20;
+		zephyr,ieee802154 = &ieee802154;
+		zephyr,boot-mode = &boot_mode0;
+		nordic,vpr-launcher = &cpuflpr_vpr;
+	};
+
+	cpuflpr_error_code: cpuflpr-error-code {
+		compatible = "nordic,nrf54l-cpuflpr-error-code";
+		reg = <0x2f82ff00 0x100>;
+		status = "okay";
 	};
 
 	aliases {
 		imu0 = &lsm6dso;
 	};
+};
+
+&cpuflpr_vpr {
+	status = "okay";
+};
+
+&ipc0 {
+	status = "okay";
 };
 
 &cpuapp_sram {
@@ -106,6 +122,32 @@
 	status = "okay";
 };
 
+&radio {
+	status = "okay";
+};
+
+&ieee802154 {
+	status = "okay";
+};
+
+&nfct {
+	status = "okay";
+};
+
+&temp {
+	status = "okay";
+};
+
+&gpregret1 {
+	status = "okay";
+
+	boot_mode0: boot_mode@0 {
+		compatible = "zephyr,retention";
+		status = "okay";
+		reg = <0x0 0x1>;
+	};
+};
+
 &gpio0 {
 	status = "okay";
 
@@ -153,30 +195,5 @@
 	status = "okay";
 };
 
-&cpuapp_rram {
-	partitions {
-		compatible = "fixed-partitions";
-		#address-cells = <1>;
-		#size-cells = <1>;
-
-		boot_partition: partition@0 {
-			label = "mcuboot";
-			reg = <0x0 DT_SIZE_K(64)>;
-		};
-
-		slot0_partition: partition@10000 {
-			label = "image-0";
-			reg = <0x10000 DT_SIZE_K(664)>;
-		};
-
-		slot1_partition: partition@b6000 {
-			label = "image-1";
-			reg = <0xb6000 DT_SIZE_K(664)>;
-		};
-
-		storage_partition: partition@15c000 {
-			label = "storage";
-			reg = <0x15c000 DT_SIZE_K(36)>;
-		};
-	};
-};
+/* Include default memory partition configuration file */
+#include <nordic/nrf54l15_partition.dtsi>
