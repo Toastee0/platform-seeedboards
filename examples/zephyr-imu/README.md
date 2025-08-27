@@ -8,7 +8,7 @@ How to build PlatformIO based project
 
 ```shell
 # Change directory to example
-$ cd platform-seeedboards/examples/zephyr-blink
+$ cd platform-seeedboards/examples/zephyr-imu
 
 # Build project
 $ pio run
