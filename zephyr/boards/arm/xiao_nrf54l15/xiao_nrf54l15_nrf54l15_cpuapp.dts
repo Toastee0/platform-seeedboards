@@ -3,9 +3,8 @@
  */
 
 /dts-v1/;
-#include "nrf54l_05_10_15_cpuapp.dtsi"
-#include "nrf54l15_cpuapp.dtsi"
 #include "nrf54l15.dtsi"
+#include "nrf54l_05_10_15_cpuapp.dtsi"
 #include "seeed_xiao_connector.dtsi"
 #include "xiao_nrf54l15_common.dtsi"
 
